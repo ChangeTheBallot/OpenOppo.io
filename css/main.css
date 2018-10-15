@@ -298,3 +298,11 @@ main{
 ,#introBill{
   width: 45vw;
 }
+.on-load{
+  margin: 0 .27vw;
+  padding: 0 .27vw;
+  border-bottom: 1vh solid lightgrey;
+}
+.on-load:last-child{
+  padding-bottom: 5vw;
+}

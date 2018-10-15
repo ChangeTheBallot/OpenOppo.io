@@ -8,6 +8,7 @@ $(document).ready(function() {
   const season = document.getElementById('season');
   const activeBillHtml = document.getElementById('activeBill');
   const introBillHtml =  document.getElementById('introBill');
+  const main = document.getElementById('main');
   // const billDisplay;
   // const voteDisplay;
   let setHeader = (xhr) => {
@@ -30,7 +31,7 @@ $(document).ready(function() {
           '</br>Cosponsers: ' + res[i].cosponsors  +
           '</header><section>' + res[i].short_title  +
           '<a href="' + res[i].congressdotgov_url  +
-          '"> learn more</a></br><h6> last major action</h6>' + res[i].latest_major_action
+          '"> learn more</a><h6> last major action</h6>' + res[i].latest_major_action
           + '</section></div>';
         }
       },
@@ -53,18 +54,23 @@ $(document).ready(function() {
           '</br>Cosponsers: ' + res[i].cosponsors  +
           '</header><section>' + res[i].short_title  +
           '<a href="' + res[i].congressdotgov_url  +
-          '"> learn more</a></br><h6> last major action</h6>' + res[i].latest_major_action
+          '"> learn more</a><h6> last major action</h6>' + res[i].latest_major_action
           + '</section></div>';
         }
       },
       error: function() { alert('somthing went wrong'); }
     });
   };
+  let init = () =>{
+    firstNameInput.value = '';
+    lastNameInput.value = '';
+  };
 
   window.onload = function(){
     for(let i = 102; i < 116; i += 1){
        season.innerHTML += '<option value="' + i + '">' + i + '</option>';
     }
+    init();
     activeBill();
     introBill();
   };
@@ -72,7 +78,7 @@ $(document).ready(function() {
 
   chambers.addEventListener('change', function(){
     season.innerHTML = ' ';
-    if($('select#chambers option:checked').val() == 'senate'){
+    if($('nav select#chambers option:checked').val() == 'senate'){
       for(let i = 80; i < 116; i += 1){
          season.innerHTML += '<option value="' + i + '">' + i + '</option>';
       }
@@ -85,7 +91,7 @@ $(document).ready(function() {
 
 
   submitName.addEventListener('click', function(){
-    const membersID = [];
+    let membersID = [];
     let seasonPickerValue = $('select#season option:checked').val();
     let chamberPickerValue = $('select#chambers option:checked').val();
     let firstNameValue = firstNameInput.value;
@@ -97,8 +103,10 @@ $(document).ready(function() {
       beforeSend: setHeader,
       success: (data) => {
         let res = data.results[0].members;
+        lastNameValue = lastNameValue.toLowerCase()
+        firstNameValue = firstNameValue.toLowerCase();
         for(let i = 0; i < res.length; i += 1){
-          if(res[i].last_name == lastNameValue || res[i].first_name == firstNameValue){
+          if(res[i].last_name.toLowerCase() == lastNameValue || res[i].first_name.toLowerCase() == firstNameValue){
             let index = membersID.indexOf(res[i].id)
             if(index == -1){
               membersID.push(res[i].id);
@@ -109,6 +117,7 @@ $(document).ready(function() {
           alert('no returns');
         } else{
           billResults(membersID);
+          init();
         }
       },
       error: function() { alert('something broke'); }
@@ -125,7 +134,19 @@ $(document).ready(function() {
         dataType: 'json',
         beforeSend: setHeader,
         success: (data) =>{
-          console.log(data);
+          let res = data.results[0];
+          let bill = res.bills;
+          main.innerHTML = '';
+          for(let i = 0; i < bill.length; i += 1){
+            main.innerHTML += '<div class="on-load"><header><h5>' + res.bills[i].number +
+            '</h5></br>' + res.bills[i].sponsor_title  +
+            ' ' + res.bills[i].sponsor_name  +
+            '</br>Cosponsers: ' + res.bills[i].cosponsors  +
+            '</header><section>' + res.bills[i].short_title  +
+            '<a href="' + res.bills[i].congressdotgov_url  +
+            '"> learn more</a><h6> last major action</h6>' + res.bills[i].latest_major_action
+            + '</section></div>';
+          }
         },
         error: function() { alert('somthing is wrong'); }
       });
