@@ -1,0 +1,197 @@
+/*******
+
+ typography
+
+
+*****/
+/* base type */
+/* line 11, ../../sass/00-atom/typeography.scss */
+html {
+  /* Change default typefaces here */
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: calc(.875 + 0.45vw);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* web fonts */
+@font-face {
+  font-family: ubuntu;
+  src: url(stylesheets/fonts/ubuntu-font-family-0.83);
+}
+/* line 22, ../../sass/00-atom/typeography.scss */
+.unbuntu {
+  font-family: 'unbuntu';
+}
+
+/* Copy & Lists */
+/* line 26, ../../sass/00-atom/typeography.scss */
+p {
+  line-height: calc(1.5rem + 0.45vw);
+  margin-top: 1.02rem;
+  margin-bottom: 0.35rem;
+}
+
+/* line 31, ../../sass/00-atom/typeography.scss */
+ul,
+ol {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* line 36, ../../sass/00-atom/typeography.scss */
+ul li,
+ol li {
+  line-height: 1.5;
+}
+
+/* line 40, ../../sass/00-atom/typeography.scss */
+ul ul,
+ol ul,
+ul ol,
+ol ol {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* line 47, ../../sass/00-atom/typeography.scss */
+blockquote {
+  line-height: 1.5;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Headings */
+/* line 53, ../../sass/00-atom/typeography.scss */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  /* Change heading typefaces here */
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  margin-top: calc(.35 + .1vh);
+  margin-bottom: 0;
+  line-height: calc(1 + .05vw);
+  text-shadow: 1px 1px 3px darkgrey, 1px 1px 2px lightgrey;
+}
+
+/* line 66, ../../sass/00-atom/typeography.scss */
+h1 {
+  font-size: 2.842rem;
+  line-height: 2.15;
+  margin-top: 2.85rem;
+}
+
+/* line 71, ../../sass/00-atom/typeography.scss */
+h2 {
+  font-size: 2.428rem;
+  line-height: 2.05;
+}
+
+/* line 75, ../../sass/00-atom/typeography.scss */
+h3 {
+  font-size: calc(2.114rem + .1vw);
+  line-height: 1.5;
+}
+
+/* line 79, ../../sass/00-atom/typeography.scss */
+h4 {
+  font-size: calc(1.407rem + .5vw);
+}
+
+/* line 82, ../../sass/00-atom/typeography.scss */
+h5 {
+  font-size: calc(1.013333333333333rem + .5vw);
+}
+
+/* line 85, ../../sass/00-atom/typeography.scss */
+h6 {
+  font-size: calc(0.7535rem + .85vw);
+}
+
+/* Tables */
+/* line 89, ../../sass/00-atom/typeography.scss */
+table {
+  border-spacing: 0;
+  width: 100%;
+}
+
+/* line 93, ../../sass/00-atom/typeography.scss */
+td,
+th {
+  border-bottom: .1rem solid darkgrey;
+  padding: 1.2rem 1.5rem;
+  text-align: center;
+}
+/* line 99, ../../sass/00-atom/typeography.scss */
+td:first-child,
+th:first-child {
+  padding-left: 0;
+}
+/* line 102, ../../sass/00-atom/typeography.scss */
+td:last-child,
+th:last-child {
+  padding-right: 0;
+}
+
+/* Code blocks */
+/* line 108, ../../sass/00-atom/typeography.scss */
+code {
+  vertical-align: bottom;
+}
+
+/* type face*/
+/*******
+
+
+Help Classes
+
+*****/
+/* line 118, ../../sass/00-atom/typeography.scss */
+.text-center {
+  text-align: center;
+}
+
+/*******
+
+
+templates grid/flex
+
+
+*****/
+/* line 128, ../../sass/00-atom/typeography.scss */
+#grid-2-1 {
+  display: grid;
+}
+
+@media only screen and (max-width: 400px) {
+  /* line 138, ../../sass/00-atom/typeography.scss */
+  #grid-2-1 {
+    display: flex;
+    flex-flow: column;
+  }
+}
+/* line 143, ../../sass/00-atom/typeography.scss */
+#type-face p {
+  display: block;
+}
+
+/*********
+
+
+Navigation
+
+
+*********/
+/* line 153, ../../sass/00-atom/typeography.scss */
+nav {
+  width: 100vw;
+  overflow: hidden;
+  display: flex;
+}
+
+/* line 158, ../../sass/00-atom/typeography.scss */
+nav button {
+  height: 35px;
+}

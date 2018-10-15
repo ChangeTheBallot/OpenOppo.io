@@ -10,19 +10,17 @@
 
   <link rel="manifest" href="site.webmanifest">
   <link rel="apple-touch-icon" href="icon.png">
-  <!-- Place favicon.ico in the root directory -->
 
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/typeography.css">
 </head>
 
 <body>
   <!--[if lte IE 9]>
     <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
   <![endif]-->
-
-  <!-- Add your site or application content here -->
-
+  <nav>
     <input id='firstNameInput' type="search" placeholder="First Name" />
     <input id='lastNameInput' type="search" placeholder="Last Name" />
     <select id='chambers'>
@@ -36,12 +34,13 @@
     <select id='season'>
     </select>
     <button id='submitName'>Submit</button>
+  </nav>
     <main>
       <section id='introBill'>
-
+        <h3>Recently Inroducted Bills</h3>
       </section>
       <section id='activeBill'>
-        
+        <h3>Recently Active Bills</h3>
       </section>
     </main>
 

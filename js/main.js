@@ -7,7 +7,7 @@ $(document).ready(function() {
   const chambers = document.getElementById('chambers');
   const season = document.getElementById('season');
   const activeBillHtml = document.getElementById('activeBill');
-  const introBillHtml=  document.getElementById('introBill');
+  const introBillHtml =  document.getElementById('introBill');
   // const billDisplay;
   // const voteDisplay;
   let setHeader = (xhr) => {
@@ -24,13 +24,13 @@ $(document).ready(function() {
       success: (data) =>{
         let res = data.results[0].bills;
         for(let i = 0; i < res.length; i += 1){
-          activeBillHtml.innerHTML += '<div class="on-load"><header><h3>' + res[i].number +
-          '</h3></br><h4>' + res[i].sponsor_title  +
+          activeBillHtml.innerHTML += '<div class="on-load"><header><h5>' + res[i].number +
+          '</h5></br>' + res[i].sponsor_title  +
           ' ' + res[i].sponsor_name  +
           '</br>Cosponsers: ' + res[i].cosponsors  +
           '</header><section>' + res[i].short_title  +
           '<a href="' + res[i].congressdotgov_url  +
-          '"> learn more</a></br><h4> last major action</h4>' + res[i].latest_major_action
+          '"> learn more</a></br><h6> last major action</h6>' + res[i].latest_major_action
           + '</section></div>';
         }
       },
@@ -47,13 +47,13 @@ $(document).ready(function() {
       success: (data) =>{
         let res = data.results[0].bills;
         for(let i = 0; i < res.length; i += 1){
-          activeBillHtml.innerHTML += '<div class="on-load"><header><h3>' + res[i].number +
-          '</h3></br><h4>' + res[i].sponsor_title  +
+          introBillHtml.innerHTML += '<div class="on-load"><header><h5>' + res[i].number +
+          '</h5></br>' + res[i].sponsor_title  +
           ' ' + res[i].sponsor_name  +
           '</br>Cosponsers: ' + res[i].cosponsors  +
           '</header><section>' + res[i].short_title  +
           '<a href="' + res[i].congressdotgov_url  +
-          '"> learn more</a></br><h4> last major action</h4>' + res[i].latest_major_action
+          '"> learn more</a></br><h6> last major action</h6>' + res[i].latest_major_action
           + '</section></div>';
         }
       },
@@ -66,7 +66,7 @@ $(document).ready(function() {
        season.innerHTML += '<option value="' + i + '">' + i + '</option>';
     }
     activeBill();
-    // introBill();
+    introBill();
   };
 
 
