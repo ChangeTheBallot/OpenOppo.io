@@ -289,7 +289,7 @@ textarea {
 main{
   margin: 0 3.5vw;
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: flex-start;
 }
@@ -314,6 +314,7 @@ main{
   margin: 0 .27vw;
   padding: 0 .27vw;
   border-bottom: 1vh solid lightgrey;
+  height: 100%;
 }
 .on-load:last-child{
   padding-bottom: 5vw;
@@ -326,4 +327,7 @@ main{
   height: 15vh;
   text-align: center;
 
+}
+#next{
+  width: 100vw;
 }

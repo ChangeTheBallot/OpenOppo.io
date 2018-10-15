@@ -9,12 +9,22 @@ $(document).ready(function() {
   const activeBillHtml = document.getElementById('activeBill');
   const introBillHtml =  document.getElementById('introBill');
   const main = document.getElementById('main');
+  let offSetNum = 0;
+  let offSet = '?offset=' + offSetNum;
+  const nextBtn = document.getElementById('next');
   // const billDisplay;
   // const voteDisplay;
   let setHeader = (xhr) => {
     xhr.setRequestHeader('X-API-Key', 'VYpnKNVvY5sdEXmyRoxK7VLSJkB8C839hSPtl8pA');
   };
   const xhr = new XMLHttpRequest();
+
+  nextBtn.addEventListener('click', ()=>{
+    offSetNum += 20;
+    activeBill();
+    introBill();
+  })
+
 
   let onLoadHtml = (data, html) =>{
     let res = data.results[0].bills;
@@ -32,7 +42,7 @@ $(document).ready(function() {
 
   let activeBill = () =>{
     $.ajax({
-      url: 'https://api.propublica.org/congress/v1/115/both/bills/active.json',
+      url: 'https://api.propublica.org/congress/v1/115/both/bills/active.json' + offSet,
       type: 'GET',
       dataType: 'json',
       beforeSend: setHeader,
@@ -45,7 +55,7 @@ $(document).ready(function() {
 
   let introBill = () =>{
     $.ajax({
-      url: 'https://api.propublica.org/congress/v1/115/both/bills/introduced.json',
+      url: 'https://api.propublica.org/congress/v1/115/both/bills/introduced.json' + offSet,
       type: 'GET',
       dataType: 'json',
       beforeSend: setHeader,
@@ -68,8 +78,8 @@ $(document).ready(function() {
     activeBill();
     introBill();
   };
-
-
+  setInterval(introBill(), 900000);
+  setInterval(activeBill(), 900000);
   chambers.addEventListener('change', function(){
     season.innerHTML = ' ';
     if($('nav select#chambers option:checked').val() == 'senate'){
@@ -134,7 +144,7 @@ $(document).ready(function() {
           let res = data.results[0];
           let bill = res.bills;
           if(membersID.length == 1){
-            main.innerHTML += '<header class="resultHeader"><h3>' + res.bills[i].sponsor_title + ' ' + data.results[0].name + ' number of bills: ' + data.results[0].num_results + '</h3><header>';
+            main.innerHTML += '<header class="resultHeader"><h3>' + res.bills[i].sponsor_title + ' ' + data.results[0].name + '</h3><header>';
             for(let i = 0; i < bill.length; i += 1){
               main.innerHTML += '<section><header><h5>' + res.bills[i].number +
               '</h5></br>Cosponsers: ' + res.bills[i].cosponsors  +
@@ -144,7 +154,7 @@ $(document).ready(function() {
               + '</section></section>';
             }
           }else{
-            main.innerHTML += '<header class="resultHeader"><h3>' + res.bills[i].sponsor_title + ' ' + data.results[0].name + ' number of bills: ' + data.results[0].num_results + '</h3><header>';
+            main.innerHTML += '<header class="resultHeader"><h3>' + res.bills[i].sponsor_title + ' ' + data.results[0].name + '</h3></header><div id="' + member + '">';
             for(let i = 0; i < bill.length; i += 1){
               main.innerHTML += '<section><header><h5>' + res.bills[i].number +
               '</h5></br>Cosponsers: ' + res.bills[i].cosponsors  +
@@ -153,16 +163,11 @@ $(document).ready(function() {
               '"> read text</a><h6> last major action</h6>' + res.bills[i].latest_major_action
               + '</section></section>';
             }
-              console.log(res);
-            }
+          }
         },
         error: function() { alert('somthing is wrong'); }
       });
     }
   };
-  // get json for votes based off of member ID from members.json
-  // let voteResults = () =>{
-  //
-  // };
 
 });
