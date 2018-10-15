@@ -6,21 +6,59 @@ $(document).ready(function() {
   const submitName = document.getElementById('submitName');
   const chambers = document.getElementById('chambers');
   const season = document.getElementById('season');
+  const activeBillHtml = document.getElementById('activeBill');
+  const introBillHtml=  document.getElementById('introBill');
   // const billDisplay;
   // const voteDisplay;
   let setHeader = (xhr) => {
     xhr.setRequestHeader('X-API-Key', 'VYpnKNVvY5sdEXmyRoxK7VLSJkB8C839hSPtl8pA');
   }
   const xhr = new XMLHttpRequest();
-  chambers.onload = function(){
-    for(let i = 80; i < 116; i += 1){
-       season.innerHTML = '<option value="' + i + '">' + i + '</option>';
-    }
+
+  let activeBill = () =>{
+    $.ajax({
+      url: 'https://api.propublica.org/congress/v1/115/both/bills/active.json',
+      type: 'GET',
+      dataType: 'json',
+      beforeSend: setHeader,
+      success: (data) =>{
+        let res = data.results[0].bills;
+        console.log(res);
+        for(let i = 0; i < res.length; i += 1){
+          activeBillHtml.innerHTML += '<div class="recent"><header><h3>' + res[i].number +
+          '</h3></br><h4>' + res[i].sponsor_title  +
+          ' ' + res[i].sponsor_name  +
+          '</br>Cosponsers: ' + res[i].cosponsors  +
+          '</header><section>' + res[i].short_title  +
+          '<a href="' + res[i].congressdotgov_url  +
+          '"> learn more</a></br><h4> last major action</h4>' + res[i].latest_major_action
+          + '</section></div>';
+        }
+      },
+      error: function() { alert('somthing went wrong2'); }
+    });
   };
+
+  // let introBill = () =>{
+  //   $.ajax({
+  //     url: url: 'https://api.propublica.org/congress/v1/115/both/bills/introduced.json',
+  //     type: 'GET',
+  //     dataType: 'json',
+  //     beforeSend: setHeader,
+  //     success: (data) =>{
+  //       let res = data.results[0].bills;
+  //       console.log(res);
+  //     },
+  //     error: function() { alert('somthing went wrong'); }
+  //   });
+  // };
+
   window.onload = function(){
     for(let i = 102; i < 116; i += 1){
        season.innerHTML += '<option value="' + i + '">' + i + '</option>';
     }
+    activeBill();
+    // introBill();
   };
 
 
