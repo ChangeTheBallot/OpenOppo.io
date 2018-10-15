@@ -292,7 +292,19 @@ main{
   flex-wrap: nowrap;
   justify-content: center;
   align-items: flex-start;
+}
+.mainOnLoad{
   flex-direction: row;
+}
+.mainRes{
+  flex-flow: row;
+  flex-wrap: wrap;
+}
+.mainRes section{
+  width: 33vw;
+  height: 100%;
+  border-bottom: .35vh solid lightgrey;
+  margin: 0 2.5vw;
 }
 #activeBill
 ,#introBill{
@@ -305,4 +317,13 @@ main{
 }
 .on-load:last-child{
   padding-bottom: 5vw;
+}
+.results{
+  display: flex;
+}
+.resultHeader{
+  width: 100vw;
+  height: 15vh;
+  text-align: center;
+
 }

@@ -16,6 +16,20 @@ $(document).ready(function() {
   };
   const xhr = new XMLHttpRequest();
 
+  let onLoadHtml = (data, html) =>{
+    let res = data.results[0].bills;
+    for(let i = 0; i < res.length; i += 1){
+      html.innerHTML += '<div class="on-load"><header><h5>' + res[i].number +
+      '</h5></br>' + res[i].sponsor_title  +
+      ' ' + res[i].sponsor_name  +
+      '</br>Cosponsers: ' + res[i].cosponsors  +
+      '</header><section>' + res[i].short_title  +
+      '<a href="' + res[i].congressdotgov_url  +
+      '/text" target="_blank"> read text</a><h6> last major action</h6>' + res[i].latest_major_action
+      + '</section></div>';
+    }
+  }
+
   let activeBill = () =>{
     $.ajax({
       url: 'https://api.propublica.org/congress/v1/115/both/bills/active.json',
@@ -23,17 +37,7 @@ $(document).ready(function() {
       dataType: 'json',
       beforeSend: setHeader,
       success: (data) =>{
-        let res = data.results[0].bills;
-        for(let i = 0; i < res.length; i += 1){
-          activeBillHtml.innerHTML += '<div class="on-load"><header><h5>' + res[i].number +
-          '</h5></br>' + res[i].sponsor_title  +
-          ' ' + res[i].sponsor_name  +
-          '</br>Cosponsers: ' + res[i].cosponsors  +
-          '</header><section>' + res[i].short_title  +
-          '<a href="' + res[i].congressdotgov_url  +
-          '"> learn more</a><h6> last major action</h6>' + res[i].latest_major_action
-          + '</section></div>';
-        }
+        onLoadHtml(data, activeBillHtml);
       },
       error: function() { alert('somthing went wrong2'); }
     });
@@ -46,17 +50,7 @@ $(document).ready(function() {
       dataType: 'json',
       beforeSend: setHeader,
       success: (data) =>{
-        let res = data.results[0].bills;
-        for(let i = 0; i < res.length; i += 1){
-          introBillHtml.innerHTML += '<div class="on-load"><header><h5>' + res[i].number +
-          '</h5></br>' + res[i].sponsor_title  +
-          ' ' + res[i].sponsor_name  +
-          '</br>Cosponsers: ' + res[i].cosponsors  +
-          '</header><section>' + res[i].short_title  +
-          '<a href="' + res[i].congressdotgov_url  +
-          '"> learn more</a><h6> last major action</h6>' + res[i].latest_major_action
-          + '</section></div>';
-        }
+        onLoadHtml(data, introBillHtml);
       },
       error: function() { alert('somthing went wrong'); }
     });
@@ -68,7 +62,7 @@ $(document).ready(function() {
 
   window.onload = function(){
     for(let i = 102; i < 116; i += 1){
-       season.innerHTML += '<option value="' + i + '">' + i + '</option>';
+      season.innerHTML += '<option value="' + i + '">' + i + '</option>';
     }
     init();
     activeBill();
@@ -80,11 +74,11 @@ $(document).ready(function() {
     season.innerHTML = ' ';
     if($('nav select#chambers option:checked').val() == 'senate'){
       for(let i = 80; i < 116; i += 1){
-         season.innerHTML += '<option value="' + i + '">' + i + '</option>';
+        season.innerHTML += '<option value="' + i + '">' + i + '</option>';
       }
     }else{
       for(let i = 102; i < 116; i += 1){
-         season.innerHTML += '<option value="' + i + '">' + i + '</option>';
+        season.innerHTML += '<option value="' + i + '">' + i + '</option>';
       }
     }
   });
@@ -96,6 +90,9 @@ $(document).ready(function() {
     let chamberPickerValue = $('select#chambers option:checked').val();
     let firstNameValue = firstNameInput.value;
     let lastNameValue = lastNameInput.value;
+    main.innerHTML = '';
+    main.classList.remove('mainOnLoad');
+    main.classList.add('mainRes');
     $.ajax({
       url: 'https://api.propublica.org/congress/v1/' + seasonPickerValue + '/'+ chamberPickerValue +'/members.json',
       type: 'GET',
@@ -136,17 +133,28 @@ $(document).ready(function() {
         success: (data) =>{
           let res = data.results[0];
           let bill = res.bills;
-          main.innerHTML = '';
-          for(let i = 0; i < bill.length; i += 1){
-            main.innerHTML += '<div class="on-load"><header><h5>' + res.bills[i].number +
-            '</h5></br>' + res.bills[i].sponsor_title  +
-            ' ' + res.bills[i].sponsor_name  +
-            '</br>Cosponsers: ' + res.bills[i].cosponsors  +
-            '</header><section>' + res.bills[i].short_title  +
-            '<a href="' + res.bills[i].congressdotgov_url  +
-            '"> learn more</a><h6> last major action</h6>' + res.bills[i].latest_major_action
-            + '</section></div>';
-          }
+          if(membersID.length == 1){
+            main.innerHTML += '<header class="resultHeader"><h3>' + res.bills[i].sponsor_title + ' ' + data.results[0].name + ' number of bills: ' + data.results[0].num_results + '</h3><header>';
+            for(let i = 0; i < bill.length; i += 1){
+              main.innerHTML += '<section><header><h5>' + res.bills[i].number +
+              '</h5></br>Cosponsers: ' + res.bills[i].cosponsors  +
+              '</header><section>' + res.bills[i].short_title  +
+              '<a href="' + res.bills[i].congressdotgov_url  +
+              '"> read text</a><h6> last major action</h6>' + res.bills[i].latest_major_action
+              + '</section></section>';
+            }
+          }else{
+            main.innerHTML += '<header class="resultHeader"><h3>' + res.bills[i].sponsor_title + ' ' + data.results[0].name + ' number of bills: ' + data.results[0].num_results + '</h3><header>';
+            for(let i = 0; i < bill.length; i += 1){
+              main.innerHTML += '<section><header><h5>' + res.bills[i].number +
+              '</h5></br>Cosponsers: ' + res.bills[i].cosponsors  +
+              '</header><section>' + res.bills[i].short_title  +
+              '<a href="' + res.bills[i].congressdotgov_url  +
+              '"> read text</a><h6> last major action</h6>' + res.bills[i].latest_major_action
+              + '</section></section>';
+            }
+              console.log(res);
+            }
         },
         error: function() { alert('somthing is wrong'); }
       });
