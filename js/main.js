@@ -33,9 +33,9 @@ $(document).ready(function() {
       '</h5></br>' + res[i].sponsor_title  +
       ' ' + res[i].sponsor_name  +
       '</br>Cosponsers: ' + res[i].cosponsors  +
-      '</header><section>' + res[i].short_title  +
+      '</header><section>' + res[i].short_title.substring(0, 180)  +
       '<a href="' + res[i].congressdotgov_url  +
-      '/text" target="_blank"> read text</a><h6> last major action</h6>' + res[i].latest_major_action
+      '/text" target="_blank"> read text</a><h6> last major action</h6>' + res[i].latest_major_action.substring(0, 100)
       + '</section></div>';
     }
   }
@@ -163,6 +163,7 @@ $(document).ready(function() {
               '"> read text</a><h6> last major action</h6>' + res.bills[i].latest_major_action
               + '</section></section>';
             }
+            main.innerHTML += '<button id="next">Next 20</button>';
           }
         },
         error: function() { alert('somthing is wrong'); }
