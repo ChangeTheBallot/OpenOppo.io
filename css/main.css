@@ -333,6 +333,7 @@ main{
   text-align: center;
 
 }
-#next{
+#next,
+.next{
   width: 100vw;
 }

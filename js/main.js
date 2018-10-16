@@ -11,6 +11,7 @@ $(document).ready(function() {
   const main = document.getElementById('main');
   let offSetNum = 0;
   let offSet = '?offset=' + offSetNum;
+  let nextNum = 0;
   const nextBtn = document.getElementById('next');
   // const billDisplay;
   // const voteDisplay;
@@ -21,6 +22,7 @@ $(document).ready(function() {
 
   nextBtn.addEventListener('click', ()=>{
     offSetNum += 20;
+    offSet = '?offset=' + offSetNum;
     activeBill();
     introBill();
   })
@@ -121,7 +123,7 @@ $(document).ready(function() {
           }
         }
         if(membersID.length === 0){
-          alert('no returns');
+          alert('no matches');
         } else{
           billResults(membersID);
           init();
@@ -144,7 +146,7 @@ $(document).ready(function() {
           let res = data.results[0];
           let bill = res.bills;
           if(membersID.length == 1){
-            main.innerHTML += '<header class="resultHeader"><h3>' + res.bills[i].sponsor_title + ' ' + data.results[0].name + '</h3><header>';
+            main.innerHTML = '<header class="resultHeader"><h3>' + res.bills[i].sponsor_title + ' ' + data.results[0].name + '</h3><header>';
             for(let i = 0; i < bill.length; i += 1){
               main.innerHTML += '<section><header><h5>' + res.bills[i].number +
               '</h5></br>Cosponsers: ' + res.bills[i].cosponsors  +
@@ -152,23 +154,78 @@ $(document).ready(function() {
               '<a href="' + res.bills[i].congressdotgov_url  +
               '"> read text</a><h6> last major action</h6>' + res.bills[i].latest_major_action
               + '</section></section>';
+
             }
+            main.innerHTML += ' <button class="next" value="' + member + '">Next 20</button>'
           }else{
-            main.innerHTML += '<header class="resultHeader"><h3>' + res.bills[i].sponsor_title + ' ' + data.results[0].name + '</h3></header><div id="' + member + '">';
-            for(let i = 0; i < bill.length; i += 1){
-              main.innerHTML += '<section><header><h5>' + res.bills[i].number +
-              '</h5></br>Cosponsers: ' + res.bills[i].cosponsors  +
-              '</header><section>' + res.bills[i].short_title  +
-              '<a href="' + res.bills[i].congressdotgov_url  +
-              '"> read text</a><h6> last major action</h6>' + res.bills[i].latest_major_action
-              + '</section></section>';
+            main.innerHTML += '<header class="resultHeader" id="' + member + '"><h3>' + res.bills[i].sponsor_title + ' ' + data.results[0].name + '</h3><button class="show" value="'+ member +'">show bills introduced</button></header>';
             }
-            main.innerHTML += '<button id="next">Next 20</button>';
-          }
         },
         error: function() { alert('somthing is wrong'); }
       });
     }
   };
+  $(document).on('click', '.show', function(){
+    let setHeader = (xhr) => {
+      xhr.setRequestHeader('X-API-Key', 'VYpnKNVvY5sdEXmyRoxK7VLSJkB8C839hSPtl8pA');
+    };
+    const xhr = new XMLHttpRequest();
+    let member = $(this).val();
+    $('main').empty();
+    $.ajax({
+      url: 'https://api.propublica.org/congress/v1/members/'+ member +'/bills/introduced.json',
+      type: 'GET',
+      dataType: 'json',
+      beforeSend: setHeader,
+      success: (data) =>{
+        let res = data.results[0];
+        let bill = res.bills;
+        console.log(res);
+        main.innerHTML = '<header class="resultHeader"><h3>' + data.results[0].bills[0].sponsor_title + ' ' + data.results[0].name + '</h3><header>';
+        for(let i = 0; i < bill.length; i += 1){
+          main.innerHTML += '<section><header><h5>' + res.bills[i].number +
+          '</h5></br>Cosponsers: ' + res.bills[i].cosponsors  +
+          '</header><section>' + res.bills[i].short_title  +
+          '<a href="' + res.bills[i].congressdotgov_url  +
+          '"> read text</a><h6> last major action</h6>' + res.bills[i].latest_major_action
+          + '</section></section>';
+        }
+        main.innerHTML += ' <button class="next" value="' + member + '">Next 20</button>'
+      }
+      ,
+      error: function() { alert('somthing is wrong'); }
+    });
 
+  });
+  $(document).on('click', '.next', function() {
+    let setHeader = (xhr) => {
+      xhr.setRequestHeader('X-API-Key', 'VYpnKNVvY5sdEXmyRoxK7VLSJkB8C839hSPtl8pA');
+    };
+    const xhr = new XMLHttpRequest();
+    let member =  $(this).val();
+    nextNum += 20;
+    let nextSet = '?offset=' + nextNum
+    $('.next').remove();
+    $.ajax({
+      url: 'https://api.propublica.org/congress/v1/members/'+ member +'/bills/introduced.json' + nextSet,
+      type: 'GET',
+      dataType: 'json',
+      beforeSend: setHeader,
+      success: (data) =>{
+        let res = data.results[0];
+        let bill = res.bills;
+        for(let i = 0; i < bill.length; i += 1){
+          main.innerHTML += '<section><header><h5>' + res.bills[i].number +
+          '</h5></br>Cosponsers: ' + res.bills[i].cosponsors  +
+          '</header><section>' + res.bills[i].short_title  +
+          '<a href="' + res.bills[i].congressdotgov_url  +
+          '"> read text</a><h6> last major action</h6>' + res.bills[i].latest_major_action
+          + '</section></section>';
+        }
+        main.innerHTML += ' <button class="next" value="' + member + '">Next 20</button>'
+      }
+      ,
+      error: function() { alert('somthing is wrong'); }
+    });
+  });
 });
