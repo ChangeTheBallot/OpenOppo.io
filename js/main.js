@@ -102,9 +102,6 @@ $(document).ready(function() {
     let chamberPickerValue = $('select#chambers option:checked').val();
     let firstNameValue = firstNameInput.value;
     let lastNameValue = lastNameInput.value;
-    main.innerHTML = '';
-    main.classList.remove('mainOnLoad');
-    main.classList.add('mainRes');
     $.ajax({
       url: 'https://api.propublica.org/congress/v1/' + seasonPickerValue + '/'+ chamberPickerValue +'/members.json',
       type: 'GET',
@@ -125,6 +122,9 @@ $(document).ready(function() {
         if(membersID.length === 0){
           alert('no matches');
         } else{
+          main.innerHTML = '';
+          main.classList.remove('mainOnLoad');
+          main.classList.add('mainRes');
           billResults(membersID);
           init();
         }
@@ -180,7 +180,6 @@ $(document).ready(function() {
       success: (data) =>{
         let res = data.results[0];
         let bill = res.bills;
-        console.log(res);
         main.innerHTML = '<header class="resultHeader"><h3>' + data.results[0].bills[0].sponsor_title + ' ' + data.results[0].name + '</h3><header>';
         for(let i = 0; i < bill.length; i += 1){
           main.innerHTML += '<section><header><h5>' + res.bills[i].number +
